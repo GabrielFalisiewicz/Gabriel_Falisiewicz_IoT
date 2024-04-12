@@ -1,5 +1,6 @@
 import Controller from '../interfaces/controller.interface';
 import { Request, Response, NextFunction, Router } from 'express';
+import {checkIdParam} from '../middlewares/deviceldParam.middleware';
 
 let testArr = [4,5,6,3,5,3,7,5,13,5,6,4,3,6,3,6];
 
@@ -13,13 +14,12 @@ class DataController implements Controller {
  
     private initializeRoutes() {
         this.router.get(`${this.path}/latest`, this.getLatestReadingsFromAllDevices);
-        this.router.post(`${this.path}/:id`, this.addData);
-        this.router.get(`${this.path}/:id`, this.getDataById);
-        this.router.get(`${this.path}/:id/latest`, this.getLatestDataById);
-        this.router.get(`${this.path}/:id/:num`, this.getRangeDataById);
+        this.router.post(`${this.path}/:id`, checkIdParam, this.addData);
+        this.router.get(`${this.path}/:id`, checkIdParam, this.getDataById);
+        this.router.get(`${this.path}/:id/latest`, checkIdParam, this.getLatestDataById);
+        this.router.get(`${this.path}/:id/:num`, checkIdParam, this.getRangeDataById);
         this.router.delete(`${this.path}/all`, this.deleteAllData);
-        this.router.delete(`${this.path}/:id`, this.deleteDataById);
-
+        this.router.delete(`${this.path}/:id`, checkIdParam, this.deleteDataById);
     }
 
     private getLatestReadingsFromAllDevices = async (request: Request, response: Response, next: NextFunction) => {
@@ -30,7 +30,7 @@ class DataController implements Controller {
     };
 
     private addData = async(request: Request, response: Response, next: NextFunction) => {
-        const { elem } = request.body;
+        const { elem } = request.body; //Sparować
         let data = testArr;
         data.push(elem);
         response.status(200).json(data); 
