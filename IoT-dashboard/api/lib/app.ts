@@ -9,11 +9,11 @@ class App {
     public app: express.Application;
 
     constructor(controllers: Controller[]) {
-        this.app = express();
-       
-        this.initializeControllers(controllers);
-        this.connectToDatabase();
-       }
+      this.app = express();
+      this.initializeMiddlewares();
+      this.initializeControllers(controllers);
+      this.connectToDatabase();
+  }
 
        private async connectToDatabase(): Promise<void> {
         try {
