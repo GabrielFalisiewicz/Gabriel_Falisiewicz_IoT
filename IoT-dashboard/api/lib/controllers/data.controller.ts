@@ -2,6 +2,7 @@ import Controller from '../interfaces/controller.interface';
 import { Request, Response, NextFunction, Router } from 'express';
 import {checkIdParam} from '../middlewares/deviceldParam.middleware';
 import DataService from "../modules/services/data.service"
+import { log } from "../middlewares/log.middleware";
 
 let testArr = [4,5,6,3,5,3,7,5,13,5,6,4,3,6,3,6];
 
@@ -15,20 +16,23 @@ class DataController implements Controller {
     }
  
     private initializeRoutes() {
-        this.router.get(`${this.path}/latest`, this.getLatestReadingsFromAllDevices);
-        this.router.post(`${this.path}/:id`, checkIdParam, this.addData);
-        this.router.get(`${this.path}/:id`,checkIdParam, this.getAllDeviceData);
-        this.router.get(`${this.path}/:id/latest`, checkIdParam, this.getLatestDataById);
-        this.router.get(`${this.path}/:id/:num`, checkIdParam, this.getRangeDataById);
-        this.router.delete(`${this.path}/all`, this.deleteAllData);
-        this.router.delete(`${this.path}/:id`, checkIdParam, this.deleteDataById);
+        this.router.get(`${this.path}/latest`, this.getLatestReadingsFromAllDevices, log);
+        this.router.get(`${this.path}/:id`,checkIdParam, this.getAllDeviceData, log);
+        this.router.get(`${this.path}/:id/latest`, checkIdParam, this.getLatestDataById, log);
+        this.router.get(`${this.path}/:id/:num`, checkIdParam, this.getRangeDataById, log);
+        this.router.post(`${this.path}/:id`, checkIdParam, this.addData, log);
+        this.router.delete(`${this.path}/all`, this.deleteAllData, log);
+        this.router.delete(`${this.path}/:id`, checkIdParam, this.deleteDataById, log);
     }
 
     private getLatestReadingsFromAllDevices = async (request: Request, response: Response, next: NextFunction) => {
-        const id = Number(request.params.id);
-        const data = testArr;
-        console.log("Text")
-        response.status(200).json(data);
+        try{
+            const data = await this.dataService.getAllNewest();
+            response.status(200).json(data);
+        }catch(error){
+            console.error(`Validation Error: ${error.message}`);
+            response.status(400).json({ error: 'Error.' });
+        }
     };
 
     private addData = async (request: Request, response: Response, next: NextFunction) => {
@@ -41,7 +45,6 @@ class DataController implements Controller {
             humidity: air[2].value,
             deviceId: Number(id),
         }
-       
         try {
             await this.dataService.createData(data);
             response.status(200).json(data);
@@ -53,33 +56,59 @@ class DataController implements Controller {
      
      
      private getAllDeviceData = async (request: Request, response: Response, next: NextFunction) => {
-        const { id } = request.params;
-        const data = await this.dataService.query(id);
-        response.status(200).json(data);
+        const id = request.params.id;
+        try{
+            const data = await this.dataService.query(id);
+            response.status(200).json(data);    
+        }catch(error){
+            console.error(`Validation Error: ${error.message}`);
+            response.status(400).json({ error: 'Error.' });
+        }
     }
 
     private getLatestDataById = async (request: Request, response: Response, next: NextFunction) => {
-        const id = Number(request.params.id);
-        const data = Math.max(...testArr);
-        response.status(200).json(data);
+        const id = request.params.id;
+        try{
+            const data = await this.dataService.get(id);
+            response.status(200).json(data);    
+        }catch(error){
+            console.error(`Validation Error: ${error.message}`);
+            response.status(400).json({ error: 'Error.' });
+        }
     };
 
     private getRangeDataById = async (request: Request, response: Response, next: NextFunction) => {
-        const id = Number(request.params.id);
-        const num = Number(request.params.num);
-        const data = testArr.slice(id, id + num);
-        response.status(200).json(data);
+        const id = request.params.id;
+        const num = request.params.num;
+        try{
+            const data = await this.dataService.getAllNewest(id, num);
+            response.status(200).json(data);    
+        }catch(error){
+            console.error(`Validation Error: ${error.message}`);
+            response.status(400).json({ error: 'Error.' });
+        }
+        
     };
 
     private deleteAllData = async (request: Request, response: Response, next: NextFunction) => {
-        testArr = [];
-        response.status(200).json({message: 'All data deleted.'});
+        try{
+            const data = await this.dataService.deleteData();
+            response.status(200).json();    
+        }catch(error){
+            console.error(`Validation Error: ${error.message}`);
+            response.status(400).json({ error: 'Error.' });
+        }
     };
 
     private deleteDataById = async (request: Request, response: Response, next: NextFunction) => {
-        const id = Number(request.params.id);
-        testArr.splice(id, 1);
-        response.status(200).json({message: `Data at index ${id} deleted.`});
+        const id = request.params.id;
+        try{
+            const data = await this.dataService.deleteData(id);
+            response.status(200).json();    
+        }catch(error){
+            console.error(`Validation Error: ${error.message}`);
+            response.status(400).json({ error: 'Error.' });
+        }
     };
 
  }
