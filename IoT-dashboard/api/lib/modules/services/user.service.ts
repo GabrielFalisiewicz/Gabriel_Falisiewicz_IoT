@@ -27,7 +27,19 @@ class UserService {
         console.error('Wystąpił błąd podczas pobierania danych:', error);
         throw new Error('Wystąpił błąd podczas pobierania danych');
     }
-}
+    }
+
+    public async getAllUsers(){
+        try{
+            const result = await UserModel.find();
+            if(result){
+                return result;
+            }
+        } catch(error){
+            console.error("Błąd - odczyt danych" + error);
+            throw new Error('Wystąpił błąd podczas pobierania danych');
+        }
+    }
 }
 
 export default UserService;

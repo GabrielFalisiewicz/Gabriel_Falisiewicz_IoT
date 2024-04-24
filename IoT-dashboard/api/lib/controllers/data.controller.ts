@@ -3,6 +3,7 @@ import { Request, Response, NextFunction, Router } from 'express';
 import {checkIdParam} from '../middlewares/deviceldParam.middleware';
 import DataService from "../modules/services/data.service"
 import { log } from "../middlewares/log.middleware";
+import { role } from "../middlewares/role.middleware";
 import Joi from 'joi';
 
 let testArr = [4,5,6,3,5,3,7,5,13,5,6,4,3,6,3,6];
@@ -18,10 +19,10 @@ class DataController implements Controller {
  
     private initializeRoutes() {
         this.router.get(`${this.path}/latest`, this.getLatestReadingsFromAllDevices, log);
-        this.router.get(`${this.path}/:id`,checkIdParam, this.getAllDeviceData, log);
+        this.router.get(`${this.path}/:id`,checkIdParam, role, this.getAllDeviceData, log);
         this.router.get(`${this.path}/:id/latest`, checkIdParam, this.getLatestDataById, log);
         this.router.get(`${this.path}/:id/:num`, checkIdParam, this.getRangeDataById, log);
-        this.router.post(`${this.path}/:id`, checkIdParam, this.addData, log);
+        this.router.post(`${this.path}/:id`, checkIdParam, role, this.addData, log);
         this.router.delete(`${this.path}/all`, this.deleteAllData, log);
         this.router.delete(`${this.path}/:id`, checkIdParam, this.deleteDataById, log);
     }
