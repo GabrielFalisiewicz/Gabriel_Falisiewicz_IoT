@@ -11,6 +11,20 @@ import * as jwt from 'jsonwebtoken';
 import {IUser} from "../modules/models/user.model"
 
 export let login_user: string;
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // Use `true` for port 465, `false` for all other ports
+    auth: {
+      user: "softwaretestsmtp@gmail.com",
+      pass: "xyz",
+    },
+    tls:{
+        rejectUnauthorized: false
+    }
+  });
 
 interface tokenType {
     userId: string;
@@ -50,7 +64,13 @@ class UserController implements Controller {
    }
 
    private sendEmail = async(pass: string, email: string) => {
-     
+    const info = await transporter.sendMail({
+        from: 'admin :D', 
+        to: email,
+        subject: "New password ✔", 
+        text: "Your new password " + pass, 
+      });
+      console.log("Message sent: %s", info.messageId);
    }
 
    private resetPassword = async(request: Request, response: Response, next: NextFunction) => {
