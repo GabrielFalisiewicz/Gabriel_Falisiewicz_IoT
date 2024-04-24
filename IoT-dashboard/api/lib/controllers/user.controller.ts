@@ -5,6 +5,7 @@ import {admin} from '../middlewares/admin.middleware';
 import UserService from "../modules/services/user.service";
 import PasswordService from "../modules/services/password.service";
 import TokenService from "../modules/services/token.service";
+import { request } from 'http';
 
 class UserController implements Controller {
    public path = '/api/user';
@@ -21,6 +22,12 @@ class UserController implements Controller {
        this.router.post(`${this.path}/create`, this.createNewOrUpdate);
        this.router.post(`${this.path}/auth`, this.authenticate);
        this.router.delete(`${this.path}/logout/:userId`,auth, this.removeHashSession);
+       this.router.put(`${this.path}/reset`, this.resetPassword);
+   }
+
+   private resetPassword = async(request: Request, response: Response, next: NextFunction) => {
+        const { email } = request.body;
+        
    }
 
    private authenticate = async (request: Request, response: Response, next: NextFunction) => {
