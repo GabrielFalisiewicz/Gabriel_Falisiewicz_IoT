@@ -4,13 +4,17 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Charts from './components/Charts.tsx'
 import Navbar from './components/Navbar.tsx'
-import status from './components/status.tsx'
+import Status from './components/status.tsx'
 
 function App() {
 
   return (
     <>
         <Navbar/>
+        <div className="divStyle">
+          <Status />
+          <Charts />
+        </div>
     </>
   )
 }

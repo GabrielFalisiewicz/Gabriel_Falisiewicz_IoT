@@ -11,27 +11,34 @@ import Divider from '@mui/material/Divider';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import OpacityIcon from '@mui/icons-material/Opacity';
+import { fontGrid } from '@mui/material/styles/cssUtils';
 
-function status() {
+function Status() {
     return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardContent>
-                <Typography variant="body2" color="text.secondary">
+        <Card sx={{ width: 300,
+            adisplay: 'flex',
+            fontFamily: 'monospace',
+            backgroundColor: '#1e1e1e', 
+            justifyContent: 'flex-start',
+            color: '#fff' 
+         }}>
+            <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', flexGrow: 1 }}>
+                <Typography variant="body2" color="white" sx={{fontSize: '24px'}}>
                     Device No. 3
                 </Typography>
             </CardContent>
-            <Divider sx={{ my: 1, backgroundColor: '#fff' }} />
-            <Typography variant='body2'>
-                <ThermostatIcon color='action'/> {`38.5°C`}
+            <Divider sx={{backgroundColor: '#fff', paddingBottom: '6px', marginBottom: '10px' }} />
+            <Typography variant='body2' sx={{ display: 'flex', justifyContent: 'flex-start', padding: '5px 10px'}}>
+                <ThermostatIcon color='inherit' sx={{ paddingRight: '10px'}}/> {`38.5°C`}
             </Typography>
-            <Typography variant='body2'>
-                <CloudUploadIcon color='action'/> {`1013.25 hPa`}
+            <Typography variant='body2' sx={{ display: 'flex', justifyContent: 'flex-start', padding: '5px 10px'}}>
+                <CloudUploadIcon color='inherit' sx={{ paddingRight: '10px'}}/> {`1013.25 hPa`}
             </Typography>
-            <Typography variant='body2'>
-                <OpacityIcon color='action'/> {`45%`}
+            <Typography variant='body2' sx={{ display: 'flex', justifyContent: 'flex-start', padding: '5px 10px 20px 10px'}}>
+                <OpacityIcon color='inherit' sx={{ paddingRight: '10px'}}/> {`45%`}
             </Typography>
         </Card>
     );
 }
 
-export default status;
+export default Status;
