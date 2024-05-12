@@ -1,40 +1,36 @@
 import * as React from 'react';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import DeviceThermostatIcon from '@mui/material/Typography'
 import Box from '@mui/material/Box';
-import { Divider } from '@mui/material';
-
-const pages = 'Device No.';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import ThermostatIcon from '@mui/icons-material/Thermostat';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import OpacityIcon from '@mui/icons-material/Opacity';
 
 function status() {
     return (
-        <Box
-        height={200}
-        width={200}
-        my={4}
-        display="flex"
-        alignItems="center"
-        gap={4}
-        p={2}
-      >
-        <p>{pages} 0</p>
-        <Divider orientation="horizontal" flexItem style={{borderWidth: 2, borderColor: 'white'}} />
-        {/* {hasData && <Typography style={{paddingTop: '10px'}} component="div">
-            <Typography variant="h6" component="div">
-            <DeviceThermostatIcon></DeviceThermostatIcon>
-            <span className="value">{data?.temperature}</span> <span>&deg;C</span>
-        </Typography>
-        <Typography variant="h6" component="div">
-            <CloudUploadIcon></CloudUploadIcon>
-            <span className="value">{data?.pressure}</span> hPa
-        </Typography>
-        <Typography variant="h6" component="div">
-            <OpacityIcon></OpacityIcon>
-            <span className="value">{data?.humidity}</span>%
-        </Typography>
-        </Typography>} */}
-      </Box>
+        <Card sx={{ maxWidth: 345 }}>
+            <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                    Device No. 3
+                </Typography>
+            </CardContent>
+            <Divider sx={{ my: 1, backgroundColor: '#fff' }} />
+            <Typography variant='body2'>
+                <ThermostatIcon color='action'/> {`38.5°C`}
+            </Typography>
+            <Typography variant='body2'>
+                <CloudUploadIcon color='action'/> {`1013.25 hPa`}
+            </Typography>
+            <Typography variant='body2'>
+                <OpacityIcon color='action'/> {`45%`}
+            </Typography>
+        </Card>
     );
 }
 
