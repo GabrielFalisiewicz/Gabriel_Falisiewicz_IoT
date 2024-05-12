@@ -27,9 +27,12 @@ function Charts() {
           strokeWidth:1
          },
          "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
-          fill:"#FFFF"
+          fill:"#FFFFFF"
+        },
+        "& .MuiChartsAxis-label":{
+          fill:"#FFFFFF",
         }
-         
+      
       }}
       width={600}
       height={300}
@@ -37,6 +40,13 @@ function Charts() {
           { data: pData, label: 'pv' },
           { data: uData, label: 'uv' },
       ]}
+      slotProps={{
+        legend: {
+          labelStyle: {
+            fill: 'white', 
+          },
+        }
+      }}
       xAxis={[{ scaleType: 'point', data: xLabels }]}
   />
     );

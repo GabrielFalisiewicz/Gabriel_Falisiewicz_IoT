@@ -13,7 +13,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import OpacityIcon from '@mui/icons-material/Opacity';
 import { fontGrid } from '@mui/material/styles/cssUtils';
 
-function Status() {
+function Status({Show}) {
     return (
         <Card sx={{ width: 300,
             adisplay: 'flex',
@@ -27,8 +27,8 @@ function Status() {
                     Device No. 3
                 </Typography>
             </CardContent>
-            <Divider sx={{backgroundColor: '#fff', paddingBottom: '6px', marginBottom: '10px' }} />
-            <Typography variant='body2' sx={{ display: 'flex', justifyContent: 'flex-start', padding: '5px 10px'}}>
+            <Divider sx={{backgroundColor: '#fff', paddingBottom: '6px', width: '90%', margin: '0 auto' }} />
+            <Typography variant='body2' sx={{ display: 'flex', justifyContent: 'flex-start', padding: '5px 10px',  marginTop: '10px'}}>
                 <ThermostatIcon color='inherit' sx={{ paddingRight: '10px'}}/> {`38.5°C`}
             </Typography>
             <Typography variant='body2' sx={{ display: 'flex', justifyContent: 'flex-start', padding: '5px 10px'}}>
@@ -37,6 +37,11 @@ function Status() {
             <Typography variant='body2' sx={{ display: 'flex', justifyContent: 'flex-start', padding: '5px 10px 20px 10px'}}>
                 <OpacityIcon color='inherit' sx={{ paddingRight: '10px'}}/> {`45%`}
             </Typography>
+            {Show && (
+                 <CardActions>
+                    <Button size="small">Details</Button>
+                </CardActions>
+            )}
         </Card>
     );
 }
